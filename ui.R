@@ -35,8 +35,9 @@ shinyUI(
                           
                           tabPanel(p(icon("line-chart"),"Weekday vs. Weekend", align="center"),
                                    h4('Projected Daily Activity over weekday vs Weekend', align="center"),
-                                   ##h5('Show chart later'),
+                                   ##h5('Show chart later')
                                    plotOutput("testWeek")
+                                   ##dataTableOutput(outputId="dWeekTable")
                             
                           )
                         )

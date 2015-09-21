@@ -59,9 +59,14 @@ shinyServer(function(input, output) { # server is defined within
   })
   
 
+  output$dWeekTable <- renderDataTable({
+    week.data1 <- data.frame(PrepWeekData(FilterDataset()))
+  } #, options = list(bFilter = FALSE, iDisplayLength = 50)
+  )
   
   output$testWeek <- renderPlot({
     week.data1 <- data.frame(PrepWeekData(FilterDataset()))
+    ##week.data1 <- PrepWeekData(FilterDataset())
     g <- ggplot(week.data1, aes(interval, steps))
     g <- g + geom_line(colour="blue")
     g <- g + facet_wrap(~DayType, nrow=2)

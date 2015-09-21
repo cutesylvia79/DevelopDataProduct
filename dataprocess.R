@@ -3,11 +3,20 @@ library(dplyr)
 library(plyr)
 library(DT)
 
-data <-read.csv("Data/activity.csv", header= TRUE, sep=",", 
-                colClasses = c("integer","character","integer"))
+
+data <- fread("./Data/activity.csv", sep=",", header="auto", na.strings="NA",
+      stringsAsFactors=FALSE,colClasses = c("integer","character","integer"))
+week.date <- data.frame("week.day"=c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"), "DayType"=c("weekdays","weekdays","weekdays","weekdays","weekdays","weekend","weekend"))
+
+##week.day <- 
+##data <-read.csv("./Data/activity.csv", header= TRUE, sep=",", 
+##                colClasses = c("integer","character","integer"))
 ## format the date into yyyy-mm-dd
 data$date <-as.Date(data$date,"%Y-%m-%d")
+data$week.day <-weekdays(data$date)
 
+new.data <- merge(data,week.date, by=c("week.day"))
+data <- new.data
 
 impute.value <- function(steps,interval,IA.Data)
 {
@@ -81,12 +90,9 @@ PrepHistogram <- function(dt) {
 
 
 PrepWeekData <- function(dt) {
-  weekend <- weekdays(dt$date) %in% c("Saturday","Sunday")
-  dt$DayType[!weekend] <-"weekdays"
-  dt$DayType[weekend] <- "weekend"
   
   week.activity <-ddply(dt, c("interval", "DayType"), 
-                        summarise, steps = mn <-mean(steps, na.rm=TRUE))
+                        summarise, steps = mean(steps, na.rm=TRUE))
   return(week.activity)
 }
 
