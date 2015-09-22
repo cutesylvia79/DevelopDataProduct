@@ -4,6 +4,20 @@ library(ggplot2)
 require(googleVis)
 source("dataprocess.R")
 
+data <- fread("./Data/activity.csv", sep=",", header="auto", na.strings="NA",
+              stringsAsFactors=FALSE,colClasses = c("integer","character","integer"))
+week.date <- data.frame("week.day"=c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"), "DayType"=c("weekdays","weekdays","weekdays","weekdays","weekdays","weekend","weekend"))
+
+##week.day <- 
+##data <-read.csv("./Data/activity.csv", header= TRUE, sep=",", 
+##                colClasses = c("integer","character","integer"))
+## format the date into yyyy-mm-dd
+data$date <-as.Date(data$date,"%Y-%m-%d")
+data$week.day <-weekdays(data$date)
+
+new.data <- merge(data,week.date, by=c("week.day"))
+data <- new.data
+
 shinyServer(function(input, output) { # server is defined within
   # these parentheses
   output$textDisplay <- renderText({ # mark function as reactive
@@ -41,7 +55,7 @@ shinyServer(function(input, output) { # server is defined within
     
     dlyActivity <- ddply(FilterDataset(),"date", summarise, steps=sum(steps))
     popHist <- gvisHistogram(data.frame(dlyActivity$steps), options=list(
-      height="500px",
+      height="600px",
       title= "Average Daily Activity Pattern",
       histogram="{ hideBucketItems:true, bucketSize:10}",
       hAxis="{ title:'Steps per day'}",

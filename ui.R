@@ -18,11 +18,6 @@ shinyUI(
                       ),
                       mainPanel(
                         tabsetPanel(
-                          # Data 
-                          tabPanel(p(icon("table"), "Dataset"),
-                                   ##h4('Display Dataset here later')
-                                   dataTableOutput(outputId="dTable")
-                          ), # end of "Dataset" tab panel
                           tabPanel(p(icon("bar-chart"), "Histogram"), 
                                    h4('Histogram of Daily Activity', align = "center"),
                                    ##h5('Show histogram here later'),
@@ -39,7 +34,13 @@ shinyUI(
                                    plotOutput("testWeek")
                                    ##dataTableOutput(outputId="dWeekTable")
                             
-                          )
+                          ),
+                          
+                            # Data 
+                            tabPanel(p(icon("table"), "Dataset"),
+                                     ##h4('Display Dataset here later')
+                                     dataTableOutput(outputId="dTable")
+                            ) # end of "Dataset" tab panel
                         )
                         
                       )     
